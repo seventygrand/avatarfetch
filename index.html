@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>roblox avatar downloader</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0f7fa;
+            color: #2c3e50;
+        }
+
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #00796b;
+        }
+
+        p {
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            color: #34495e;
+        }
+
+        .bookmarklet-button {
+            display: inline-block;
+            padding: 15px 25px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            border-radius: 25px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .bookmarklet-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>roblox avatar downloader</h1>
+        <p>drag the button below to your bookmarks bar to create a bookmarklet:</p>
+        <a href="javascript:(async () => {
+            const userId = await fetch('https://users.roblox.com/v1/users/authenticated', {
+                credentials: 'include'
+            }).then(res => res.json()).then(data => data.id);
+            const thumbnailUrl = `https://thumbnails.roblox.com/v1/users/avatar?userIds=${userId}&size=420x420&format=Png`;
+            const imageUrl = await fetch(thumbnailUrl).then(res => res.json()).then(data => data.data[0].imageUrl);
+            const image = await fetch(imageUrl).then(res => res.blob());
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(image);
+            a.download = 'avatar.png';
+            a.click();
+        })();" class="bookmarklet-button">download avatar</a>
+    </div>
+</body>
+</html>
